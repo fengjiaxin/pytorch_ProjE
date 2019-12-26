@@ -101,9 +101,7 @@ class ProjE_Dataset(Dataset):
 
     def __init__(self,htr,hr_t,entity_num,neg_weight=0.25):
         self.htr = htr
-        hr_tlist = list()
-        hr_tweight = list()
-
+        self.hr_t = hr_t
         self.entity_num = entity_num
         self.neg_weight=neg_weight
 
@@ -128,7 +126,7 @@ class ProjE_Dataset(Dataset):
             hr_tlist.append([head_id,rel_id])
 
         self.hr_t_array = torch.from_numpy(np.asarray(hr_tlist,dtype=np.int32)).long()
-        self.hr_tweight_array = torch.from_numpy(np.asarray(hr_tweight,dtype=np.float32)).long()
+        self.hr_tweight_array = torch.from_numpy(np.asarray(hr_tweight,dtype=np.float32))
         # self.tr_h_array = np.asarray(tr_hlist,dtype=np.int32)
         # self.tr_hweight_array = np.asarray(tr_hweight,dtype=np.float32)
 
@@ -140,7 +138,14 @@ class ProjE_Dataset(Dataset):
 
 
     def __getitem__(self, index):
-        return self.htr[index],self.hr_t_array[index],self.hr_tweight_array[index]
+        head_id = self.htr[index,0]
+        tail_id = self.htr[index,1]
+        rel_id = self.htr[index,2]
+        hr_t_candset = self.hr_t[head_id][rel_id]
+        hr_tweight = self.get_weight(hr_t_candset)
+        hr_tlist_tensor = torch.Tensor([head_id,rel_id]).long()
+        hr_tweight_tensor = torch.Tensor(hr_tweight,dtype=np.float32)
+        return hr_tlist_tensor,hr_tweight_tensor
 
 
 def get_data_loader(hp):
