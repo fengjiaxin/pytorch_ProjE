@@ -1,0 +1,5 @@
+entity_num: 14951
+relation_num: 1345
+train triple size : 483142
+valid triple size : 50000
+test triple size : 59071

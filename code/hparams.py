@@ -10,13 +10,13 @@ import argparse
 class Hprams:
     parser = argparse.ArgumentParser()
 
-    parser.add_argument('--data_dir', default='../mini/', help='data dir')
+    parser.add_argument('--data_dir', default='../data/', help='data dir')
     parser.add_argument('--lr', default=0.001, type=float, help='learning rate')
     parser.add_argument('--dropout_rate', default=0.5, type=float, help='dropout rate')
     parser.add_argument('--embed_dim', default=100, type=int, help='entity,relation embedding dim')
     parser.add_argument('--batch_size', default=128, type=int, help='batch size')
     parser.add_argument('--eval_batch', default=256, type=int, help='eval batch size')
-    parser.add_argument('--print_every', default=1, type=int, help='print every batch')
+    parser.add_argument('--print_every', default=10, type=int, help='print every batch')
     parser.add_argument('--model_id', default='sigmoid_0', help='model id')
 
     parser.add_argument('--entity_num', default=1156, type=int, help='entity num')
