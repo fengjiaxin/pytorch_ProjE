@@ -82,11 +82,12 @@ class Data_info:
         logging.info('test triple size : %d' % len(self.test_triple))
 
         self.train_hr_t = Data_info.gen_hr_t(self.train_triple)
+        logging.info('generate train_hr_t success')
         #self.train_tr_h = Data_info.gen_tr_h(self.train_triple)
 
         self.hr_t = Data_info.gen_hr_t(np.concatenate([self.train_triple,self.valid_triple,self.test_triple],axis=0))
         #self.tr_h = Data_info.gen_tr_h(np.concatenate([self.train_triple,self.valid_triple,self.test_triple],axis=0))
-
+        logging.info('generate hr_t success')
 
 
 
@@ -137,17 +138,13 @@ def get_data_loader(hp):
 
     test_data = ProjE_Dataset(data_Info.test_triple, data_Info.hr_t, data_Info.entity_num)
 
-    # train_loader = DataLoader(train_data,batch_size = hp.batch_size,shuffle=True,num_workers=2)
-    #
-    # valid_loader = DataLoader(valid_data,batch_size=hp.eval_batch,shuffle=False,num_workers=2)
-    #
-    # test_loader = DataLoader(test_data,batch_size=hp.eval_batch,shuffle=False,num_workers=2)
+    train_loader = DataLoader(train_data,batch_size = hp.batch_size,shuffle=True,num_workers=2)
+    valid_loader = DataLoader(valid_data,batch_size=hp.eval_batch,shuffle=False,num_workers=2)
+    test_loader = DataLoader(test_data,batch_size=hp.eval_batch,shuffle=False,num_workers=2)
 
-    train_loader = DataLoader(train_data,batch_size = hp.batch_size,shuffle=True)
-
-    valid_loader = DataLoader(valid_data,batch_size=hp.eval_batch,shuffle=False)
-
-    test_loader = DataLoader(test_data,batch_size=hp.eval_batch,shuffle=False)
+    #train_loader = DataLoader(train_data,batch_size = hp.batch_size,shuffle=True)
+    #valid_loader = DataLoader(valid_data,batch_size=hp.eval_batch,shuffle=False)
+    #test_loader = DataLoader(test_data,batch_size=hp.eval_batch,shuffle=False)
 
     return train_loader,valid_loader,test_loader,data_Info.hr_t,data_Info.entity_num,data_Info.rel_num
 
