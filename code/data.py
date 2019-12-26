@@ -6,7 +6,6 @@
 # @Desc    : 数据生成器
 
 import torch
-import torch.utils.data as data
 from torch.utils.data import Dataset, DataLoader
 import numpy as np
 import os
@@ -105,33 +104,6 @@ class ProjE_Dataset(Dataset):
         self.entity_num = entity_num
         self.neg_weight=neg_weight
 
-        for idx in range(htr.shape[0]):
-            head_id = htr[idx,0]
-            tail_id = htr[idx,1]
-            rel_id = htr[idx,2]
-
-
-            # tail rel -> head
-            # tr_h_candset = tr_h[tail_id][rel_id]
-            # tr_hweight.append(
-            #     self.get_weight(tr_h_candset)
-            # )
-            # tr_hlist.append([tail_id,rel_id])
-
-            # head rel -> tail
-            hr_t_candset = hr_t[head_id][rel_id]
-            hr_tweight.append(
-                self.get_weight(hr_t_candset)
-            )
-            hr_tlist.append([head_id,rel_id])
-
-        self.hr_t_array = torch.from_numpy(np.asarray(hr_tlist,dtype=np.int32)).long()
-        self.hr_tweight_array = torch.from_numpy(np.asarray(hr_tweight,dtype=np.float32))
-        # self.tr_h_array = np.asarray(tr_hlist,dtype=np.int32)
-        # self.tr_hweight_array = np.asarray(tr_hweight,dtype=np.float32)
-
-
-
 
     def __len__(self):
         return len(self.htr)
@@ -139,7 +111,7 @@ class ProjE_Dataset(Dataset):
 
     def __getitem__(self, index):
         head_id = self.htr[index,0]
-        tail_id = self.htr[index,1]
+        #tail_id = self.htr[index,1]
         rel_id = self.htr[index,2]
         hr_t_candset = self.hr_t[head_id][rel_id]
         hr_tweight = self.get_weight(hr_t_candset)
