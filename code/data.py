@@ -116,8 +116,8 @@ class ProjE_Dataset(Dataset):
         hr_t_candset = self.hr_t[head_id][rel_id]
         hr_tweight = self.get_weight(hr_t_candset)
         hr_tlist_tensor = torch.Tensor([head_id,rel_id]).long()
-        hr_tweight_tensor = torch.Tensor(hr_tweight,dtype=np.float32)
-        return hr_tlist_tensor,hr_tweight_tensor
+        hr_tweight_tensor = torch.Tensor(hr_tweight)
+        return self.htr[index],hr_tlist_tensor,hr_tweight_tensor
 
 
 def get_data_loader(hp):
@@ -137,11 +137,17 @@ def get_data_loader(hp):
 
     test_data = ProjE_Dataset(data_Info.test_triple, data_Info.hr_t, data_Info.entity_num)
 
-    train_loader = DataLoader(train_data,batch_size = hp.batch_size,shuffle=True,num_workers=2)
+    # train_loader = DataLoader(train_data,batch_size = hp.batch_size,shuffle=True,num_workers=2)
+    #
+    # valid_loader = DataLoader(valid_data,batch_size=hp.eval_batch,shuffle=False,num_workers=2)
+    #
+    # test_loader = DataLoader(test_data,batch_size=hp.eval_batch,shuffle=False,num_workers=2)
 
-    valid_loader = DataLoader(valid_data,batch_size=hp.eval_batch,shuffle=False,num_workers=2)
+    train_loader = DataLoader(train_data,batch_size = hp.batch_size,shuffle=True)
 
-    test_loader = DataLoader(test_data,batch_size=hp.eval_batch,shuffle=False,num_workers=2)
+    valid_loader = DataLoader(valid_data,batch_size=hp.eval_batch,shuffle=False)
+
+    test_loader = DataLoader(test_data,batch_size=hp.eval_batch,shuffle=False)
 
     return train_loader,valid_loader,test_loader,data_Info.hr_t,data_Info.entity_num,data_Info.rel_num
 
